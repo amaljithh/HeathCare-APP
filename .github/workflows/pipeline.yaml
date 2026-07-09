@@ -36,7 +36,7 @@ jobs:
           cache: 'maven'
           
       - name: build the code
-        run : mvn -B ntp test
+        run : mvn -B -ntp test
 
   sonar:
     name: sonar-${{matrix.service}}
