@@ -1,4 +1,4 @@
-name: Sample github action workflow
+name: CI workflow of Java microservice
 
 on:
   push:
