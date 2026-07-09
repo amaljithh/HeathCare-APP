@@ -37,8 +37,47 @@ jobs:
           
       - name: build the code
         run : mvn -B clean verify
-        
-        
 
-
-    
+  sonar:
+    name: sonar-${{matrix.service}}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - appointment-service
+          - doctor-service
+          - patient-service
+          - report-service
+          - user-service
+    defaults:
+      run:
+        working-directory: healthcare-microservices/${{matrix.service}}
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+        
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'  
+          
+      - name: Official SonarQube Scan
+        env:
+          JAVA_VERSION: "17"
+          SONAR_TOKEN: ${{ secrets.SONAR }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_ORGANIZATION: ${{ github.repository_owner }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          
+        run: >
+          mvn -B -ntp clean verify sonar:sonar
+          -Dsonar.host.url=$SONAR_HOST_URL
+          -Dsonar.projectKey=$SONAR_ORGANIZATION_${{ matrix.service }}
+          -Dsonar.projectName=${{ matrix.service }}
+          -Dsonar.organization=$SONAR_ORGANIZATION
+  
+      
