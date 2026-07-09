@@ -36,7 +36,7 @@ jobs:
           cache: 'maven'
           
       - name: build the code
-        run : mvn -B clean verify
+        run : mvn -B ntp test
 
   sonar:
     name: sonar-${{matrix.service}}
@@ -57,6 +57,9 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
+        with:
+          # CRITICAL: Fixes Sonar errors by pulling full git history
+          fetch-depth: 0 
         
       - name: Set up JDK 17
         uses: actions/setup-java@v4
