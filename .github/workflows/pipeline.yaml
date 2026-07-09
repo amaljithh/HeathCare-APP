@@ -9,9 +9,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - appointment-service
+          - doctor-service
+          - patient-service
+          - report-service
+          - user-service
     defaults:
       run:
-        working-directory: healthcare-microservices/doctor-service
+        working-directory: healthcare-microservices/${{matrix.service}}
       
     steps:
       - name: checkout code
