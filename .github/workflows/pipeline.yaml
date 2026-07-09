@@ -1,0 +1,17 @@
+name: Sample github action workflow
+
+on:
+  push:
+    branches: ['main', 'master']
+  workflow_dispatch: 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+        
+
+
+    
