@@ -8,9 +8,27 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: healthcare-microservices/doctor-service
+      
     steps:
       - name: checkout code
+        timeout-minutes: 5
         uses: actions/checkout@v4
+        
+      - name: Set up JDK 17
+        timeout-minutes: 10
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+          
+      - name: build the code
+        run : mvn -B clean verify
+        
         
 
 
